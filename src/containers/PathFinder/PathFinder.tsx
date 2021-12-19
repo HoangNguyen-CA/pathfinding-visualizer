@@ -1,26 +1,20 @@
 import React, { useState } from 'react';
+import NodeType from '../../types/Node';
 import Grid from '../../components/Grid/Grid';
 
 const COLS = 20;
 const ROWS = 20;
 
 const genGrid = () => {
-  const grid = [];
+  const grid: NodeType[][] = [];
   for (let i = 0; i < ROWS; i++) {
-    const row = [];
+    const row: NodeType[] = [];
     for (let j = 0; j < COLS; j++) {
-      row.push(genNode(i, j));
+      row.push(new NodeType(i, j));
     }
     grid.push(row);
   }
   return grid;
-};
-
-const genNode = (row, col) => {
-  const node = {};
-  node.distance = 100;
-  node.id = row * col + col;
-  return node;
 };
 
 const PathFinder = () => {

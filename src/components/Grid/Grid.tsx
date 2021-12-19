@@ -1,8 +1,8 @@
-import React from 'react';
 import styles from './Grid.module.css';
+import NodeType from '../../types/Node';
 import Node from '../Node/Node';
 
-const Grid = ({ grid }) => {
+const Grid = ({ grid }: { grid: NodeType[][] }) => {
   return (
     <>
       {grid.map((row, indx1) => {
