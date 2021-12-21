@@ -2,47 +2,38 @@ import Node from './Node';
 import Coord from './Coord';
 class Grid {
   grid: Node[][];
-  startCoord: Coord;
-  endCoord: Coord;
-  constructor(rows: number, cols: number, startCoord: Coord, endCoord: Coord) {
+  startNode: Node | null = null;
+  endNode: Node | null = null;
+
+  constructor(rows: number, cols: number) {
     const grid: Node[][] = [];
     for (let i = 0; i < rows; i++) {
-      const row: Node[] = [];
+      const gridRow: Node[] = [];
       for (let j = 0; j < cols; j++) {
         const node = new Node(i, j, cols * i + j);
-        if (i === startCoord[0] && j === startCoord[1]) {
-          node.start = true;
-        } else if (i === endCoord[0] && j === endCoord[1]) {
-          node.end = true;
-        }
-        row.push(node);
+        gridRow.push(node);
       }
-      grid.push(row);
+      grid.push(gridRow);
     }
     this.grid = grid;
-    this.startCoord = startCoord;
-    this.endCoord = endCoord;
+    this.setStartNode([0, 0]);
+    this.setEndNode([grid.length - 1, grid[0].length - 1]);
   }
 
   getNode(coord: Coord): Node {
     return this.grid[coord[0]][coord[1]];
   }
 
-  visitNode(coord: Coord) {
-    let oldNode = this.getNode(coord);
+  setStartNode(coord: Coord) {
+    if (this.startNode) this.startNode.setNotStart();
+    this.startNode = this.getNode(coord);
+    this.startNode.setStart();
+  }
 
-    const grid: Node[][] = [...this.grid];
-    grid[coord[0]] = [...grid[coord[0]]];
-    grid[coord[0]][coord[1]] = new Node(
-      coord[0],
-      coord[1],
-      oldNode.id,
-      true,
-      oldNode.start,
-      oldNode.end
-    );
-
-    this.grid = grid;
+  setEndNode(coord: Coord) {
+    if (this.endNode) this.endNode.setNotEnd();
+    this.endNode = this.getNode(coord);
+    this.endNode.setEnd();
   }
 }
 

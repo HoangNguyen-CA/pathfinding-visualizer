@@ -1,21 +1,14 @@
 import React from 'react';
 import styles from './NodeTile.module.css';
 
-const Node = ({
-  visited,
-  start,
-  end,
+const NodeTile = ({
+  forwardedRef,
 }: {
-  visited: boolean;
-  start: boolean;
-  end: boolean;
+  forwardedRef: React.RefObject<HTMLDivElement>;
 }) => {
   const classes = [styles.container];
-  if (visited) classes.push(styles.visited);
-  if (start) classes.push(styles.start);
-  if (end) classes.push(styles.end);
 
-  return <div className={classes.join(' ')} />;
+  return <div className={classes.join(' ')} ref={forwardedRef} />;
 };
 
-export default Node;
+export default NodeTile;

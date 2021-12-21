@@ -3,3 +3,15 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.node-visited {
+  background-color: green;
+}
+
+.node-start {
+  background-color: white !important;
+}
+
+.node-end {
+  background-color: aqua !important;
+}

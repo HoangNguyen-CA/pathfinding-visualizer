@@ -1,31 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import GridTiles from '../../components/GridTiles/GridTiles';
 import Grid from '../../types/Grid';
 import BFS from '../../algorithms/BFS';
 
-const ROWS = 20;
-const COLS = 30;
-
-const gridObject = new Grid(ROWS, COLS, [10, 5], [10, 10]);
+const ROWS = 30;
+const COLS = 70;
+const gridObject = new Grid(ROWS, COLS);
 const bfs = new BFS(gridObject);
-bfs.run();
-console.log(bfs.orderVisited);
+console.log(gridObject.startNode, gridObject.endNode);
 
 const PathFinder = () => {
-  const [gridState, setGridState] = useState(gridObject.grid);
-
   useEffect(() => {
+    gridObject.setStartNode([10, 10]);
+    gridObject.setEndNode([10, 60]);
+    bfs.run();
+    console.log(bfs.orderVisited);
     for (let i = 0; i < bfs.orderVisited.length; i++) {
       setTimeout(() => {
-        gridObject.visitNode(bfs.orderVisited[i].coord);
-        setGridState(gridObject.grid);
-      }, i * 20);
+        bfs.orderVisited[i].setVisited();
+      }, i * 10);
     }
   }, []);
 
   return (
     <div>
-      <GridTiles grid={gridState} />
+      <GridTiles grid={gridObject.grid} />
     </div>
   );
 };
