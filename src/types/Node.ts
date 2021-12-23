@@ -8,6 +8,7 @@ class Node {
   end: boolean;
   parent: Node | null;
   ref: React.RefObject<HTMLDivElement>;
+  isWall: boolean;
 
   constructor(
     row: number,
@@ -24,71 +25,72 @@ class Node {
     this.end = end;
     this.ref = React.createRef<HTMLDivElement>();
     this.parent = null;
+    this.isWall = false;
   }
 
   setVisited() {
-    const current = this.ref.current;
-    if (current) {
-      current.classList.add('node-visited');
-    }
+    this.visited = true;
+    if (this.ref.current) this.ref.current.classList.add('node-visited');
   }
 
-  setUnvisited() {
-    const current = this.ref.current;
-    if (current) {
-      current.classList.remove('node-visited');
-    }
+  setNotVisited() {
+    this.visited = false;
+    if (this.ref.current) this.ref.current.classList.remove('node-visited');
+  }
+
+  setPath() {
+    if (this.ref.current) this.ref.current.classList.add('node-path');
+  }
+
+  setNotPath() {
+    if (this.ref.current) this.ref.current.classList.remove('node-path');
   }
 
   setStart() {
     this.start = true;
-    const current = this.ref.current;
-    if (current) {
-      current.classList.add('node-start');
-    }
+    if (this.ref.current) this.ref.current.classList.add('node-start');
   }
 
   setNotStart() {
     this.start = false;
-    const current = this.ref.current;
-    if (current) {
-      current.classList.remove('node-start');
-    }
+    if (this.ref.current) this.ref.current.classList.remove('node-start');
   }
 
   setEnd() {
     this.end = true;
-    const current = this.ref.current;
-    if (current) {
-      current.classList.add('node-end');
-    }
+    if (this.ref.current) this.ref.current.classList.add('node-end');
   }
 
   setNotEnd() {
     this.end = false;
-    const current = this.ref.current;
-    if (current) {
-      current.classList.remove('node-end');
-    }
+    if (this.ref.current) this.ref.current.classList.remove('node-end');
+  }
+
+  setWall() {
+    if (this.start || this.end) return;
+    this.isWall = true;
+    if (this.ref.current) this.ref.current.classList.add('node-wall');
+  }
+
+  setNotWall() {
+    this.isWall = false;
+    if (this.ref.current) this.ref.current.classList.remove('node-wall');
   }
 
   getNeighbors(grid: Node[][]): Node[] {
     const neighbors: Node[] = [];
-    let left;
-    let right;
-    let up;
-    let down;
+    let left, right, up, down;
     if (this.coord[0] > 0) {
       up = grid[this.coord[0] - 1][this.coord[1]];
       neighbors.push(up);
     }
-    if (this.coord[0] < grid.length - 1) {
-      down = grid[this.coord[0] + 1][this.coord[1]];
-      neighbors.push(down);
-    }
     if (this.coord[1] < grid[0].length - 1) {
       right = grid[this.coord[0]][this.coord[1] + 1];
       neighbors.push(right);
+    }
+    if (this.coord[0] < grid.length - 1) {
+      down = grid[this.coord[0] + 1][this.coord[1]];
+      neighbors.push(down);
     }
     if (this.coord[1] > 0) {
       left = grid[this.coord[0]][this.coord[1] - 1];

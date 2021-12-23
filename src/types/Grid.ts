@@ -24,6 +24,16 @@ class Grid {
     return this.grid[coord[0]][coord[1]];
   }
 
+  reset() {
+    for (let row of this.grid) {
+      for (let node of row) {
+        node.setNotPath();
+        node.setNotVisited();
+        node.parent = null;
+      }
+    }
+  }
+
   setStartNode(coord: Coord) {
     if (this.startNode) this.startNode.setNotStart();
     this.startNode = this.getNode(coord);

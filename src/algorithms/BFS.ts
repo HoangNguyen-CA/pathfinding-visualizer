@@ -13,6 +13,9 @@ class BFS {
   }
 
   run() {
+    this.gridObject.reset();
+    this.orderVisited = [];
+    this.path = [];
     if (!this.gridObject.startNode || !this.gridObject.endNode) return;
     const queue: Node[] = [];
     const visited: boolean[] = [];
@@ -31,11 +34,22 @@ class BFS {
       const neighbors: Node[] = node.getNeighbors(this.gridObject.grid);
 
       for (const n of neighbors) {
-        if (!visited[n.id]) {
+        if (!visited[n.id] && !n.isWall) {
+          n.parent = node;
           visited[n.id] = true;
           queue.push(n);
         }
       }
+    }
+
+    this.calculatePath(this.gridObject.endNode);
+  }
+
+  private calculatePath(endNode: Node) {
+    let node: Node | null = endNode;
+    while (node !== null) {
+      this.path.unshift(node);
+      node = node.parent;
     }
   }
 }

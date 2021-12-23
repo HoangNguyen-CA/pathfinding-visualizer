@@ -8,10 +8,18 @@
   background-color: green;
 }
 
+.node-path {
+  background-color: yellow !important;
+}
+
 .node-start {
-  background-color: white !important;
+  background-color: rgb(255, 0, 0) !important;
 }
 
 .node-end {
   background-color: aqua !important;
+}
+
+.node-wall {
+  background-color: black !important;
 }
