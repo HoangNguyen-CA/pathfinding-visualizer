@@ -4,6 +4,8 @@ class Grid {
   grid: Node[][];
   startNode: Node | null = null;
   endNode: Node | null = null;
+  DEFAULT_START_COORD: Coord;
+  DEFAULT_END_CORD: Coord;
 
   constructor(rows: number, cols: number) {
     const grid: Node[][] = [];
@@ -16,8 +18,10 @@ class Grid {
       grid.push(gridRow);
     }
     this.grid = grid;
-    this.setStartNode([0, 0]);
-    this.setEndNode([grid.length - 1, grid[0].length - 1]);
+    this.DEFAULT_START_COORD = [0, 0];
+    this.DEFAULT_END_CORD = [grid.length - 1, grid[0].length - 1];
+    this.setStartNode(this.DEFAULT_START_COORD);
+    this.setEndNode(this.DEFAULT_END_CORD);
   }
 
   getNode(coord: Coord): Node {

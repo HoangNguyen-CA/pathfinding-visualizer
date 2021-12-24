@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import GridTiles from '../../components/GridTiles/GridTiles';
 import Controls from '../../components/Controls/Controls';
 import Grid from '../../types/Grid';
@@ -32,7 +32,6 @@ const PathFinder = () => {
     bfs.run();
     for (let i = 0; i < bfs.orderVisited.length; i++) {
       setTimeout(() => {
-        console.log(i);
         bfs.orderVisited[i].setVisited();
         if (i === bfs.orderVisited.length - 1) {
           animatePath(bfs.path);
@@ -44,6 +43,11 @@ const PathFinder = () => {
   const resetGrid = () => {
     gridObject.reset();
   };
+
+  useEffect(() => {
+    gridObject.setStartNode(gridObject.DEFAULT_START_COORD);
+    gridObject.setEndNode(gridObject.DEFAULT_END_CORD);
+  }, [gridObject]);
 
   return (
     <div>
