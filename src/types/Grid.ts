@@ -24,30 +24,42 @@ class Grid {
     this.setEndNode(this.DEFAULT_END_CORD);
   }
 
-  getNode(coord: Coord): Node {
+  getNode(coord: Coord) {
     return this.grid[coord[0]][coord[1]];
   }
 
+  resetKeepWalls() {
+    this.callOnNodes((node) => {
+      node.resetKeepWalls();
+    });
+  }
+
   reset() {
+    this.callOnNodes((node) => node.reset());
+  }
+
+  private callOnNodes(fn: (node: Node) => void) {
     for (let row of this.grid) {
       for (let node of row) {
-        node.setNotPath();
-        node.setNotVisited();
-        node.parent = null;
+        fn(node);
       }
     }
   }
 
-  setStartNode(coord: Coord) {
-    if (this.startNode) this.startNode.setNotStart();
-    this.startNode = this.getNode(coord);
-    this.startNode.setStart();
+  setStartNode(coord: Coord | null) {
+    if (this.startNode) this.startNode.setIsStart(false);
+    if (coord) {
+      this.startNode = this.getNode(coord);
+      this.startNode.setIsStart(true);
+    } else this.startNode = null;
   }
 
-  setEndNode(coord: Coord) {
-    if (this.endNode) this.endNode.setNotEnd();
-    this.endNode = this.getNode(coord);
-    this.endNode.setEnd();
+  setEndNode(coord: Coord | null) {
+    if (this.endNode) this.endNode.setIsEnd(false);
+    if (coord) {
+      this.endNode = this.getNode(coord);
+      this.endNode.setIsEnd(true);
+    } else this.endNode = null;
   }
 }
 

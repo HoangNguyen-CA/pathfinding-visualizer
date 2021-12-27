@@ -1,80 +1,124 @@
 import React from 'react';
 import Coord from './Coord';
-class Node {
-  id: number;
-  coord: Coord;
-  visited: boolean;
-  start: boolean;
-  end: boolean;
-  parent: Node | null;
-  ref: React.RefObject<HTMLDivElement>;
-  isWall: boolean;
 
-  constructor(
-    row: number,
-    col: number,
-    id: number,
-    visited: boolean = false,
-    start: boolean = false,
-    end: boolean = false
-  ) {
+class Node {
+  private id: number;
+  private coord: Coord;
+  private visited: boolean = false;
+  private isStart: boolean = false;
+  private isEnd: boolean = false;
+  private parent: Node | null = null;
+  private isWall: boolean = false;
+
+  private ref: React.RefObject<HTMLDivElement> =
+    React.createRef<HTMLDivElement>();
+
+  constructor(row: number, col: number, id: number) {
     this.id = id;
     this.coord = [row, col];
-    this.visited = visited;
-    this.start = start;
-    this.end = end;
-    this.ref = React.createRef<HTMLDivElement>();
-    this.parent = null;
-    this.isWall = false;
   }
 
-  setVisited() {
-    this.visited = true;
-    if (this.ref.current) this.ref.current.classList.add('node-visited');
+  resetKeepWalls() {
+    this.setIsPath(false);
+    this.setParent(null);
+    this.setVisited(false);
   }
 
-  setNotVisited() {
-    this.visited = false;
-    if (this.ref.current) this.ref.current.classList.remove('node-visited');
+  reset() {
+    this.resetKeepWalls();
+    this.setIsWall(false);
   }
 
-  setPath() {
-    if (this.ref.current) this.ref.current.classList.add('node-path');
+  hardReset() {
+    this.reset();
+    this.setIsStart(false);
+    this.setIsEnd(false);
   }
 
-  setNotPath() {
-    if (this.ref.current) this.ref.current.classList.remove('node-path');
+  getId() {
+    return this.id;
   }
 
-  setStart() {
-    this.start = true;
-    if (this.ref.current) this.ref.current.classList.add('node-start');
+  getCoord() {
+    return this.coord;
   }
 
-  setNotStart() {
-    this.start = false;
-    if (this.ref.current) this.ref.current.classList.remove('node-start');
+  getVisited() {
+    return this.visited;
   }
 
-  setEnd() {
-    this.end = true;
-    if (this.ref.current) this.ref.current.classList.add('node-end');
+  setVisited(bool: boolean) {
+    if (bool) {
+      this.visited = true;
+      if (this.ref.current) this.ref.current.classList.add('node-visited');
+    } else {
+      this.visited = false;
+      if (this.ref.current) this.ref.current.classList.remove('node-visited');
+    }
   }
 
-  setNotEnd() {
-    this.end = false;
-    if (this.ref.current) this.ref.current.classList.remove('node-end');
+  getIsStart() {
+    return this.isStart;
   }
 
-  setWall() {
-    if (this.start || this.end) return;
-    this.isWall = true;
-    if (this.ref.current) this.ref.current.classList.add('node-wall');
+  setIsStart(bool: boolean) {
+    if (bool) {
+      this.isStart = true;
+      if (this.ref.current) this.ref.current.classList.add('node-start');
+    } else {
+      this.isStart = false;
+      if (this.ref.current) this.ref.current.classList.remove('node-start');
+    }
   }
 
-  setNotWall() {
-    this.isWall = false;
-    if (this.ref.current) this.ref.current.classList.remove('node-wall');
+  getIsEnd() {
+    return this.isEnd;
+  }
+
+  setIsEnd(bool: boolean) {
+    if (bool) {
+      this.isEnd = true;
+      if (this.ref.current) this.ref.current.classList.add('node-end');
+    } else {
+      this.isEnd = false;
+      if (this.ref.current) this.ref.current.classList.remove('node-end');
+    }
+  }
+
+  getParent() {
+    return this.parent;
+  }
+
+  setParent(parent: Node | null) {
+    this.parent = parent;
+  }
+
+  getRef() {
+    return this.ref;
+  }
+
+  getIsWall() {
+    return this.isWall;
+  }
+
+  setIsWall(bool: boolean) {
+    if (this.isStart || this.isEnd) return;
+
+    if (bool) {
+      this.isWall = true;
+      if (this.ref.current) this.ref.current.classList.add('node-wall');
+    } else {
+      this.isWall = false;
+      if (this.ref.current) this.ref.current.classList.remove('node-wall');
+    }
+  }
+
+  setIsPath(bool: boolean) {
+    if (bool) {
+      if (this.ref.current) this.ref.current.classList.add('node-path');
+    } else {
+      if (this.ref.current) this.ref.current.classList.remove('node-path');
+    }
   }
 
   getNeighbors(grid: Node[][]): Node[] {

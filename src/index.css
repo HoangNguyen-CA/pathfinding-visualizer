@@ -9,17 +9,17 @@
 }
 
 .node-path {
-  background-color: yellow !important;
-}
-
-.node-start {
-  background-color: rgb(255, 0, 0) !important;
-}
-
-.node-end {
-  background-color: aqua !important;
+  background-color: yellow;
 }
 
 .node-wall {
-  background-color: black !important;
+  background-color: black;
+}
+
+.node-start {
+  background-color: rgb(255, 0, 0);
+}
+
+.node-end {
+  background-color: aqua;
 }

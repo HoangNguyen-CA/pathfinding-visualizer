@@ -1,30 +1,30 @@
 import React from 'react';
 import styles from './GridTiles.module.css';
 import NodeTile from '../NodeTile/NodeTile';
-import EditMode from '../../types/EditMode';
+import UserMode from '../../types/UserMode';
 import Grid from '../../types/Grid';
 
 const GridTiles = ({
   gridObject,
-  editMode,
+  userMode,
 }: {
   gridObject: Grid;
-  editMode: EditMode;
+  userMode: UserMode;
 }) => {
   return (
     <div
-      onMouseLeave={() => (editMode.mouseHeld = false)}
+      onMouseLeave={() => (userMode.mouseHeld = false)}
       className={styles.container}
     >
-      {gridObject.grid.map((row, indx1) => {
+      {gridObject.grid.map((row, rowIndex) => {
         return (
-          <div key={indx1} className={styles.gridRow}>
+          <div key={rowIndex} className={styles.gridRow}>
             {row.map((node) => {
               return (
                 <NodeTile
-                  key={node.id}
+                  key={node.getId()}
                   node={node}
-                  editMode={editMode}
+                  userMode={userMode}
                   gridObject={gridObject}
                 />
               );
@@ -36,4 +36,4 @@ const GridTiles = ({
   );
 };
 
-export default GridTiles;
+export default React.memo(GridTiles, () => false); // prevent any re-rendering

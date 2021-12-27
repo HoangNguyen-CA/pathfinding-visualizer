@@ -13,14 +13,13 @@ class BFS {
   }
 
   run() {
-    this.gridObject.reset();
     this.orderVisited = [];
     this.path = [];
     if (!this.gridObject.startNode || !this.gridObject.endNode) return;
     const queue: Node[] = [];
     const visited: boolean[] = [];
     queue.push(this.gridObject.startNode);
-    visited[this.gridObject.startNode.id] = true;
+    visited[this.gridObject.startNode.getId()] = true;
 
     while (queue.length > 0) {
       const node = queue.shift();
@@ -28,15 +27,15 @@ class BFS {
         break;
       }
       this.orderVisited.push(node);
-      if (node.id === this.gridObject.endNode.id) {
+      if (node.getId() === this.gridObject.endNode.getId()) {
         break;
       }
       const neighbors: Node[] = node.getNeighbors(this.gridObject.grid);
 
       for (const n of neighbors) {
-        if (!visited[n.id] && !n.isWall) {
-          n.parent = node;
-          visited[n.id] = true;
+        if (!visited[n.getId()] && !n.getIsWall()) {
+          n.setParent(node);
+          visited[n.getId()] = true;
           queue.push(n);
         }
       }
@@ -49,7 +48,7 @@ class BFS {
     let node: Node | null = endNode;
     while (node !== null) {
       this.path.unshift(node);
-      node = node.parent;
+      node = node.getParent();
     }
   }
 }
