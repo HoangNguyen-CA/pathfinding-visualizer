@@ -64,6 +64,7 @@ class Node {
   setIsStart(bool: boolean) {
     if (bool) {
       this.isStart = true;
+      this.isWall = false;
       if (this.ref.current) this.ref.current.classList.add('node-start');
     } else {
       this.isStart = false;
@@ -78,6 +79,7 @@ class Node {
   setIsEnd(bool: boolean) {
     if (bool) {
       this.isEnd = true;
+      this.isWall = false;
       if (this.ref.current) this.ref.current.classList.add('node-end');
     } else {
       this.isEnd = false;

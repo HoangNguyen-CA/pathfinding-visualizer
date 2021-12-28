@@ -20,8 +20,8 @@ class Grid {
     this.grid = grid;
     this.DEFAULT_START_COORD = [0, 0];
     this.DEFAULT_END_CORD = [grid.length - 1, grid[0].length - 1];
-    this.setStartNode(this.DEFAULT_START_COORD);
-    this.setEndNode(this.DEFAULT_END_CORD);
+    this.setStartNode([0, 0]);
+    this.setEndNode([0, 0]);
   }
 
   getNode(coord: Coord) {

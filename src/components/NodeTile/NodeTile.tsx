@@ -21,12 +21,13 @@ const NodeTile = ({
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     userMode.mouseHeld = true;
-    if (userMode.placeWall) toggleWall();
+    if (userMode.placeWall && !userMode.isRunning) toggleWall();
   };
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
-    if (userMode.mouseHeld && !userMode.placeWall) toggleWall();
+    if (userMode.mouseHeld && userMode.placeWall && !userMode.isRunning)
+      toggleWall();
   };
 
   const handleMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -36,16 +37,17 @@ const NodeTile = ({
 
   const handleMouseClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
-    if (node.getIsStart()) {
+    if (userMode.isRunning) return;
+    if (node.getIsStart() && userMode.placeWall) {
       gridObject.setStartNode(null);
       userMode.setPlaceStart();
-    } else if (node.getIsEnd()) {
+    } else if (node.getIsEnd() && userMode.placeWall) {
       gridObject.setEndNode(null);
       userMode.setPlaceEnd();
-    } else if (userMode.placeStart) {
+    } else if (userMode.placeStart && !node.getIsStart() && !node.getIsEnd()) {
       gridObject.setStartNode(node.getCoord());
       userMode.setPlaceWall();
-    } else if (userMode.placeEnd) {
+    } else if (userMode.placeEnd && !node.getIsStart() && !node.getIsEnd()) {
       gridObject.setEndNode(node.getCoord());
       userMode.setPlaceWall();
     }

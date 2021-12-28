@@ -19,8 +19,8 @@ const PathFinder = () => {
 
   const runAlgorithm = () => {
     resetGridKeepWalls();
-    userModeRef.current.setDisabled();
     bfsRef.current.run();
+    userModeRef.current.setIsRunning(true); //  program has started running
     for (let i = 0; i < bfsRef.current.orderVisited.length; i++) {
       let animId = window.setTimeout(() => {
         bfsRef.current.orderVisited[i].setVisited(true);
@@ -37,7 +37,7 @@ const PathFinder = () => {
       let animId = window.setTimeout(() => {
         path[i].setIsPath(true);
         if (i === path.length - 1) {
-          userModeRef.current.setPlaceWall();
+          userModeRef.current.setIsRunning(false); //  program has stopped running
         }
       }, i * SPEED_PATH);
       animIdsRef.current.push(animId);
@@ -52,13 +52,13 @@ const PathFinder = () => {
   };
 
   const resetGridKeepWalls = () => {
-    userModeRef.current.setPlaceWall();
+    userModeRef.current.setIsRunning(false);
     gridObjectRef.current.resetKeepWalls();
     clearAnimations();
   };
 
   const resetGrid = () => {
-    userModeRef.current.setPlaceWall();
+    userModeRef.current.setIsRunning(false);
     gridObjectRef.current.reset();
     clearAnimations();
   };

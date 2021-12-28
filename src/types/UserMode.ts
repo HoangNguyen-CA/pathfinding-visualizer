@@ -2,15 +2,16 @@ enum State {
   placeWall,
   placeStart,
   placeEnd,
-  disabled,
 }
 
 class UserMode {
   private mode: State;
   mouseHeld: boolean;
+  running: boolean;
   constructor() {
     this.mode = State.placeWall;
     this.mouseHeld = false;
+    this.running = false;
   }
   get placeWall() {
     return this.mode === State.placeWall;
@@ -24,8 +25,8 @@ class UserMode {
     return this.mode === State.placeEnd;
   }
 
-  get disabled() {
-    return this.mode === State.disabled;
+  get isRunning() {
+    return this.running;
   }
 
   setPlaceWall() {
@@ -40,8 +41,8 @@ class UserMode {
     this.mode = State.placeEnd;
   }
 
-  setDisabled() {
-    this.mode = State.disabled;
+  setIsRunning(bool: boolean) {
+    this.running = bool;
   }
 }
 
