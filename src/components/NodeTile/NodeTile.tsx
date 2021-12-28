@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './NodeTile.module.css';
 
 const NodeTile = ({
   forwardedRef,
@@ -29,7 +28,7 @@ const NodeTile = ({
 
   return (
     <div
-      className={styles.container}
+      className='node'
       ref={forwardedRef}
       onMouseEnter={handleMouseEnter}
       onMouseDown={handleMouseDown}
