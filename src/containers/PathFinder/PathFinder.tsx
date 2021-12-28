@@ -17,10 +17,13 @@ const PathFinder = () => {
   const userModeRef = useRef(new UserMode());
   const animIdsRef = useRef([] as number[]);
 
+  const userMode = userModeRef.current;
+  const gridObject = gridObjectRef.current;
+
   const runAlgorithm = () => {
     resetGridKeepWalls();
     bfsRef.current.run();
-    userModeRef.current.setIsRunning(true); //  program has started running
+    userMode.setIsRunning(true); //  program has started running
     for (let i = 0; i < bfsRef.current.orderVisited.length; i++) {
       let animId = window.setTimeout(() => {
         bfsRef.current.orderVisited[i].setVisited(true);
@@ -37,7 +40,7 @@ const PathFinder = () => {
       let animId = window.setTimeout(() => {
         path[i].setIsPath(true);
         if (i === path.length - 1) {
-          userModeRef.current.setIsRunning(false); //  program has stopped running
+          userMode.setIsRunning(false); //  program has stopped running
         }
       }, i * SPEED_PATH);
       animIdsRef.current.push(animId);
@@ -52,14 +55,14 @@ const PathFinder = () => {
   };
 
   const resetGridKeepWalls = () => {
-    userModeRef.current.setIsRunning(false);
-    gridObjectRef.current.resetKeepWalls();
+    userMode.setIsRunning(false);
+    gridObject.resetKeepWalls();
     clearAnimations();
   };
 
   const resetGrid = () => {
-    userModeRef.current.setIsRunning(false);
-    gridObjectRef.current.reset();
+    userMode.setIsRunning(false);
+    gridObject.reset();
     clearAnimations();
   };
 
@@ -70,11 +73,47 @@ const PathFinder = () => {
     gridObjectRef.current.setEndNode(gridObjectRef.current.DEFAULT_END_CORD);
   }, []);
 
+  const toggleWall = (node: Node) => {
+    if (node.getIsWall()) node.setIsWall(false);
+    else node.setIsWall(true);
+  };
+
+  const onNodeDown = (node: Node) => {
+    userMode.mouseHeld = true;
+    if (userMode.placeWall && !userMode.isRunning) toggleWall(node);
+  };
+
+  const onNodeEnter = (node: Node) => {
+    if (userMode.mouseHeld && userMode.placeWall && !userMode.isRunning)
+      toggleWall(node);
+  };
+
+  const onNodeClick = (node: Node) => {
+    if (userMode.isRunning) return;
+    if (node.getIsStart() && userMode.placeWall) {
+      gridObject.setStartNode(null);
+      userMode.setPlaceStart();
+    } else if (node.getIsEnd() && userMode.placeWall) {
+      gridObject.setEndNode(null);
+      userMode.setPlaceEnd();
+    } else if (userMode.placeStart && !node.getIsStart() && !node.getIsEnd()) {
+      gridObject.setStartNode(node.getCoord());
+      userMode.setPlaceWall();
+    } else if (userMode.placeEnd && !node.getIsStart() && !node.getIsEnd()) {
+      gridObject.setEndNode(node.getCoord());
+      userMode.setPlaceWall();
+    }
+  };
+
   return (
     <div>
       <GridTiles
-        gridObject={gridObjectRef.current}
-        userMode={userModeRef.current}
+        grid={gridObject.grid}
+        onNodeClick={onNodeClick}
+        onNodeEnter={onNodeEnter}
+        onNodeDown={onNodeDown}
+        onGridUp={() => (userMode.mouseHeld = false)}
+        onGridLeave={() => (userMode.mouseHeld = false)}
       />
       <Controls
         runAlgorithm={runAlgorithm}

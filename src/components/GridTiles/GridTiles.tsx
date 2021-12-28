@@ -1,32 +1,49 @@
 import React from 'react';
 import styles from './GridTiles.module.css';
 import NodeTile from '../NodeTile/NodeTile';
-import UserMode from '../../types/UserMode';
-import Grid from '../../types/Grid';
+import Node from '../../types/Node';
 
 const GridTiles = ({
-  gridObject,
-  userMode,
+  grid,
+  onNodeClick,
+  onNodeEnter,
+  onGridUp,
+  onNodeDown,
+  onGridLeave,
 }: {
-  gridObject: Grid;
-  userMode: UserMode;
+  grid: Node[][];
+  onNodeClick: (arg: Node) => void;
+  onNodeEnter: (arg: Node) => void;
+  onNodeDown: (arg: Node) => void;
+  onGridLeave: () => void;
+  onGridUp: () => void;
 }) => {
+  const handleGridLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    onGridLeave();
+  };
+  const handleGridUp = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    onGridUp();
+  };
   return (
     <div
-      onMouseLeave={() => (userMode.mouseHeld = false)}
+      onMouseLeave={handleGridLeave}
+      onMouseUp={handleGridUp}
       className={styles.container}
     >
-      {gridObject.grid.map((row, rowIndex) => {
+      {grid.map((row, rowIndex) => {
         return (
           <div key={rowIndex} className={styles.gridRow}>
             {row.map((node) => {
               return (
                 <NodeTile
                   key={node.getId()}
-                  node={node}
-                  userMode={userMode}
-                  gridObject={gridObject}
-                />
+                  forwardedRef={node.getRef()}
+                  onNodeClick={() => onNodeClick(node)}
+                  onNodeEnter={() => onNodeEnter(node)}
+                  onNodeDown={() => onNodeDown(node)}
+                ></NodeTile>
               );
             })}
           </div>
