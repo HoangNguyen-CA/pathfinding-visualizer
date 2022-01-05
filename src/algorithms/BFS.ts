@@ -1,7 +1,8 @@
 import Node from '../types/Node';
 import Grid from '../types/Grid';
+import Algorithm from '../types/Algorithm';
 
-class BFS {
+class BFS implements Algorithm {
   gridObject: Grid;
   orderVisited: Node[];
   path: Node[];

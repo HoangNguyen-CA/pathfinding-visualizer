@@ -10,6 +10,7 @@ const GridTiles = ({
   onGridUp,
   onNodeDown,
   onGridLeave,
+  gridTilesRef,
 }: {
   grid: Node[][];
   onNodeClick: (arg: Node) => void;
@@ -17,6 +18,7 @@ const GridTiles = ({
   onNodeDown: (arg: Node) => void;
   onGridLeave: () => void;
   onGridUp: () => void;
+  gridTilesRef: React.RefObject<HTMLDivElement>;
 }) => {
   const handleGridLeave = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -31,6 +33,7 @@ const GridTiles = ({
       onMouseLeave={handleGridLeave}
       onMouseUp={handleGridUp}
       className={styles.container}
+      ref={gridTilesRef}
     >
       {grid.map((row, rowIndex) => {
         return (

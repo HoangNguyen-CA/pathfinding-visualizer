@@ -24,10 +24,16 @@
 
 .node-start::after {
   background-color: rgba(0, 255, 0, 0.849) !important;
+  cursor: grab;
 }
 
 .node-end::after {
   background-color: rgb(235, 22, 22) !important;
+  cursor: grab;
+}
+
+.node-grabbed::after {
+  cursor: grabbing;
 }
 
 .node-visited::after {
@@ -62,6 +68,10 @@
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-play-state: running;
+}
+
+.grid-active {
+  cursor: grabbing;
 }
 
 @keyframes wallAnimation {

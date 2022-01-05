@@ -64,7 +64,6 @@ class Node {
   setIsStart(bool: boolean) {
     if (bool) {
       this.isStart = true;
-      this.isWall = false;
       if (this.ref.current) this.ref.current.classList.add('node-start');
     } else {
       this.isStart = false;
@@ -79,7 +78,6 @@ class Node {
   setIsEnd(bool: boolean) {
     if (bool) {
       this.isEnd = true;
-      this.isWall = false;
       if (this.ref.current) this.ref.current.classList.add('node-end');
     } else {
       this.isEnd = false;
@@ -112,6 +110,17 @@ class Node {
     } else {
       this.isWall = false;
       if (this.ref.current) this.ref.current.classList.remove('node-wall');
+    }
+  }
+
+  toggleWall() {
+    if (this.isStart || this.isEnd) return;
+    if (this.isWall) {
+      this.isWall = false;
+      if (this.ref.current) this.ref.current.classList.remove('node-wall');
+    } else {
+      this.isWall = true;
+      if (this.ref.current) this.ref.current.classList.add('node-wall');
     }
   }
 

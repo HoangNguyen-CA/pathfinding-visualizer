@@ -1,4 +1,5 @@
-import { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
+import Algorithm from '../../types/Algorithm';
 import GridTiles from '../../components/GridTiles/GridTiles';
 import Controls from '../../components/Controls/Controls';
 import Grid from '../../types/Grid';
@@ -6,29 +7,32 @@ import BFS from '../../algorithms/BFS';
 import Node from '../../types/Node';
 import UserMode from '../../types/UserMode';
 
-const SPEED_VISITED = 2;
+const SPEED_VISITED = 3;
 const SPEED_PATH = 20;
-const ROWS = 30;
+const ROWS = 40;
 const COLS = 70;
 
 const PathFinder = () => {
   const gridObjectRef = useRef(new Grid(ROWS, COLS));
-  const bfsRef = useRef(new BFS(gridObjectRef.current));
+  const algorithmRef = useRef<Algorithm>(new BFS(gridObjectRef.current));
   const userModeRef = useRef(new UserMode());
   const animIdsRef = useRef([] as number[]);
+  const gridTilesRef = useRef<HTMLDivElement>(null);
+  const selectAlgorithmRef = useRef<HTMLSelectElement>(null);
 
   const userMode = userModeRef.current;
   const gridObject = gridObjectRef.current;
 
   const runAlgorithm = () => {
     resetGridKeepWalls();
-    bfsRef.current.run();
+    userMode.setPlaceWall();
+    algorithmRef.current.run();
     userMode.setIsRunning(true); //  program has started running
-    for (let i = 0; i < bfsRef.current.orderVisited.length; i++) {
+    for (let i = 0; i < algorithmRef.current.orderVisited.length; i++) {
       let animId = window.setTimeout(() => {
-        bfsRef.current.orderVisited[i].setVisited(true);
-        if (i === bfsRef.current.orderVisited.length - 1) {
-          animatePath(bfsRef.current.path);
+        algorithmRef.current.orderVisited[i].setVisited(true);
+        if (i === algorithmRef.current.orderVisited.length - 1) {
+          animatePath(algorithmRef.current.path);
         }
       }, i * SPEED_VISITED);
       animIdsRef.current.push(animId);
@@ -73,36 +77,50 @@ const PathFinder = () => {
     gridObjectRef.current.setEndNode(gridObjectRef.current.DEFAULT_END_CORD);
   }, []);
 
-  const toggleWall = (node: Node) => {
-    if (node.getIsWall()) node.setIsWall(false);
-    else node.setIsWall(true);
-  };
-
   const onNodeDown = (node: Node) => {
+    if (userMode.isRunning) return;
     userMode.mouseHeld = true;
-    if (userMode.placeWall && !userMode.isRunning) toggleWall(node);
+    if (userMode.placeWall) node.toggleWall();
   };
 
   const onNodeEnter = (node: Node) => {
-    if (userMode.mouseHeld && userMode.placeWall && !userMode.isRunning)
-      toggleWall(node);
+    if (userMode.isRunning) return;
+    if (userMode.mouseHeld && userMode.placeWall) node.toggleWall();
+    else if (!node.getIsStart() && !node.getIsEnd() && !node.getIsWall()) {
+      if (userMode.placeStart) {
+        gridObject.startNode.getRef().current?.classList.remove('node-grabbed');
+        gridObject.setStartNode(node.getCoord());
+        gridObject.startNode.getRef().current?.classList.add('node-grabbed');
+      } else if (userMode.placeEnd) {
+        gridObject.endNode.getRef().current?.classList.remove('node-grabbed');
+        gridObject.setEndNode(node.getCoord());
+        gridObject.endNode.getRef().current?.classList.add('node-grabbed');
+      }
+    }
   };
 
   const onNodeClick = (node: Node) => {
     if (userMode.isRunning) return;
-    if (node.getIsStart() && userMode.placeWall) {
-      gridObject.setStartNode(null);
-      userMode.setPlaceStart();
-    } else if (node.getIsEnd() && userMode.placeWall) {
-      gridObject.setEndNode(null);
-      userMode.setPlaceEnd();
-    } else if (userMode.placeStart && !node.getIsStart() && !node.getIsEnd()) {
-      gridObject.setStartNode(node.getCoord());
+    if (userMode.placeWall) {
+      if (node.getIsStart()) {
+        userMode.setPlaceStart();
+        gridTilesRef.current?.classList.add('grid-active');
+        node.getRef().current?.classList.add('node-grabbed');
+      } else if (node.getIsEnd()) {
+        userMode.setPlaceEnd();
+        gridTilesRef.current?.classList.add('grid-active');
+        node.getRef().current?.classList.add('node-grabbed');
+      }
+    } else if (userMode.placeStart || userMode.placeEnd) {
       userMode.setPlaceWall();
-    } else if (userMode.placeEnd && !node.getIsStart() && !node.getIsEnd()) {
-      gridObject.setEndNode(node.getCoord());
-      userMode.setPlaceWall();
+      gridTilesRef.current?.classList.remove('grid-active');
+      gridObject.startNode.getRef().current?.classList.remove('node-grabbed');
+      gridObject.endNode.getRef().current?.classList.remove('node-grabbed');
     }
+  };
+
+  const onAlgorithmChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(selectAlgorithmRef.current?.value);
   };
 
   return (
@@ -114,11 +132,14 @@ const PathFinder = () => {
         onNodeDown={onNodeDown}
         onGridUp={() => (userMode.mouseHeld = false)}
         onGridLeave={() => (userMode.mouseHeld = false)}
+        gridTilesRef={gridTilesRef}
       />
       <Controls
         runAlgorithm={runAlgorithm}
         resetGrid={resetGrid}
         resetGridKeepWalls={resetGridKeepWalls}
+        algorithmRef={selectAlgorithmRef}
+        onAlgorithmChange={onAlgorithmChange}
       />
     </div>
   );
