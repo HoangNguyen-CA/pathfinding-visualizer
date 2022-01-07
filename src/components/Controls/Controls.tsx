@@ -1,4 +1,5 @@
 import React from 'react';
+import AlgorithmEnum from '../../types/AlgorithmEnum';
 
 const Controls = ({
   runAlgorithm,
@@ -19,8 +20,8 @@ const Controls = ({
       <button onClick={resetGridKeepWalls}>Reset</button>
       <button onClick={resetGrid}>Clear Walls</button>
       <select name='algorithms' onChange={onAlgorithmChange} ref={algorithmRef}>
-        <option value='BFS'>BFS</option>
-        <option value='DFS'>DFS</option>
+        <option value={AlgorithmEnum.BFS}>BFS</option>
+        <option value={AlgorithmEnum.DFS}>DFS</option>
       </select>
     </div>
   );

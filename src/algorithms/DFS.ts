@@ -2,7 +2,7 @@ import Node from '../types/Node';
 import Grid from '../types/Grid';
 import Algorithm from '../types/Algorithm';
 
-class BFS implements Algorithm {
+class DFS implements Algorithm {
   gridObject: Grid;
   orderVisited: Node[];
   path: Node[];
@@ -16,27 +16,28 @@ class BFS implements Algorithm {
   run() {
     this.orderVisited = [];
     this.path = [];
-    const queue: Node[] = [];
+    const stack: Node[] = [];
     const visited: boolean[] = [];
 
     if (!this.gridObject.startNode || !this.gridObject.endNode) return;
 
-    queue.push(this.gridObject.startNode);
-    visited[this.gridObject.startNode.getId()] = true;
+    stack.push(this.gridObject.startNode);
 
-    while (queue.length > 0) {
-      const node = queue.shift();
+    while (stack.length > 0) {
+      const node = stack.pop();
       if (!node) break;
 
-      this.orderVisited.push(node);
+      if (!visited[node.getId()]) {
+        visited[node.getId()] = true;
+        this.orderVisited.push(node);
+      }
 
       if (node.getId() === this.gridObject.endNode.getId()) break;
 
       for (const n of node.getNeighbors(this.gridObject.grid)) {
         if (!visited[n.getId()] && !n.getIsWall()) {
           n.setParent(node);
-          visited[n.getId()] = true;
-          queue.push(n);
+          stack.push(n);
         }
       }
     }
@@ -53,4 +54,4 @@ class BFS implements Algorithm {
   }
 }
 
-export default BFS;
+export default DFS;

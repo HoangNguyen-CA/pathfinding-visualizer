@@ -1,5 +1,5 @@
 enum AlgorithmEnum {
-  BFS,
-  DFS,
+  BFS = 'BFS',
+  DFS = 'DFS',
 }
 export default AlgorithmEnum;
