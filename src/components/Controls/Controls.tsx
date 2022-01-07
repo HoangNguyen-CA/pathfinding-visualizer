@@ -1,5 +1,6 @@
 import React from 'react';
 import AlgorithmEnum from '../../types/AlgorithmEnum';
+import styles from './Controls.module.css';
 
 const Controls = ({
   runAlgorithm,
@@ -16,10 +17,21 @@ const Controls = ({
 }) => {
   return (
     <div>
-      <button onClick={runAlgorithm}>Run Algorithm</button>
-      <button onClick={resetGridKeepWalls}>Reset</button>
-      <button onClick={resetGrid}>Clear Walls</button>
-      <select name='algorithms' onChange={onAlgorithmChange} ref={algorithmRef}>
+      <button className={styles.btn} onClick={runAlgorithm}>
+        Run Algorithm
+      </button>
+      <button className={styles.btn} onClick={resetGridKeepWalls}>
+        Reset
+      </button>
+      <button className={styles.btn} onClick={resetGrid}>
+        Clear Walls
+      </button>
+      <select
+        className={styles.select}
+        name='algorithms'
+        onChange={onAlgorithmChange}
+        ref={algorithmRef}
+      >
         <option value={AlgorithmEnum.BFS}>BFS</option>
         <option value={AlgorithmEnum.DFS}>DFS</option>
       </select>

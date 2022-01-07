@@ -29,29 +29,31 @@ const GridTiles = ({
     onGridUp();
   };
   return (
-    <div
-      onMouseLeave={handleGridLeave}
-      onMouseUp={handleGridUp}
-      className={styles.container}
-      ref={gridTilesRef}
-    >
-      {grid.map((row, rowIndex) => {
-        return (
-          <div key={rowIndex} className={styles.gridRow}>
-            {row.map((node) => {
-              return (
-                <NodeTile
-                  key={node.getId()}
-                  forwardedRef={node.getRef()}
-                  onNodeClick={() => onNodeClick(node)}
-                  onNodeEnter={() => onNodeEnter(node)}
-                  onNodeDown={() => onNodeDown(node)}
-                ></NodeTile>
-              );
-            })}
-          </div>
-        );
-      })}
+    <div className={styles.wrapper}>
+      <div
+        onMouseLeave={handleGridLeave}
+        onMouseUp={handleGridUp}
+        className={styles.container}
+        ref={gridTilesRef}
+      >
+        {grid.map((row, rowIndex) => {
+          return (
+            <div key={rowIndex} className={styles.gridRow}>
+              {row.map((node) => {
+                return (
+                  <NodeTile
+                    key={node.getId()}
+                    forwardedRef={node.getRef()}
+                    onNodeClick={() => onNodeClick(node)}
+                    onNodeEnter={() => onNodeEnter(node)}
+                    onNodeDown={() => onNodeDown(node)}
+                  ></NodeTile>
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

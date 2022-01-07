@@ -5,7 +5,11 @@
 
 .container {
   width: max-content;
-  max-width: calc(100vw - 1px);
   margin: 1px 0 0 1px;
   /*overflow: hidden;  DONT DO THIS, REMOVES BORDER FROM NEGATIVE MARGIN */
+}
+
+.wrapper {
+  max-width: calc(100vw - 1px);
+  overflow: hidden;
 }

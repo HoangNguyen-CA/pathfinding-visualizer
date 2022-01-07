@@ -10,7 +10,7 @@ import Node from '../../types/Node';
 import UserMode from '../../types/UserMode';
 
 const SPEED_VISITED = 3;
-const SPEED_PATH = 20;
+const SPEED_PATH = 13;
 const ROWS = 40;
 const COLS = 80;
 
