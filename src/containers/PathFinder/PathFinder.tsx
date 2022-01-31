@@ -9,6 +9,8 @@ import DFS from '../../algorithms/DFS';
 import Node from '../../types/Node';
 import UserMode from '../../types/UserMode';
 
+import styles from './PathFinder.module.css';
+
 const SPEED_VISITED = 3;
 const SPEED_PATH = 13;
 const ROWS = 40;
@@ -139,7 +141,7 @@ const PathFinder = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <Controls
         runAlgorithm={runAlgorithm}
         resetGrid={resetGrid}

@@ -16,7 +16,7 @@ const Controls = ({
   algorithmRef: React.RefObject<HTMLSelectElement>;
 }) => {
   return (
-    <div>
+    <div className={styles.container}>
       <button className={styles.btn} onClick={runAlgorithm}>
         Run Algorithm
       </button>
