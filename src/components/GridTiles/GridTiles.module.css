@@ -11,6 +11,6 @@
 }
 
 .wrapper {
-  max-width: calc(100vw - 1px);
+  max-width: calc(100% - 1px);
   overflow: hidden;
 }

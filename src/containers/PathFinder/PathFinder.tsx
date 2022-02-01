@@ -11,8 +11,8 @@ import UserMode from '../../types/UserMode';
 
 import styles from './PathFinder.module.css';
 
-const SPEED_VISITED = 3;
-const SPEED_PATH = 13;
+const SPEED_VISITED = 5;
+const SPEED_PATH = 10;
 const ROWS = 40;
 const COLS = 80;
 

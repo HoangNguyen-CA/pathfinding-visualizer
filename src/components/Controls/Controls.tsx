@@ -1,6 +1,7 @@
 import React from 'react';
 import AlgorithmEnum from '../../types/AlgorithmEnum';
 import styles from './Controls.module.css';
+import Manual from '../../containers/Manual/Manual';
 
 const Controls = ({
   runAlgorithm,
@@ -35,6 +36,7 @@ const Controls = ({
         <option value={AlgorithmEnum.BFS}>BFS</option>
         <option value={AlgorithmEnum.DFS}>DFS</option>
       </select>
+      <Manual />
     </div>
   );
 };
